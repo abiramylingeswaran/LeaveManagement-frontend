@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LeafMark from "../components/LeafMark";
 import { useApp } from "../context/AppContext";
@@ -15,6 +15,18 @@ export default function Login() {
   const [selected, setSelected] = useState("employee");
   const navigate = useNavigate();
 
+  const visualRef = useRef(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const rect = visualRef.current.getBoundingClientRect();
+    const relX = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 → 0.5
+    const relY = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({ x: relX, y: relY });
+  };
+
+  const handleMouseLeave = () => setTilt({ x: 0, y: 0 });
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setRole(selected);
@@ -23,21 +35,56 @@ export default function Login() {
 
   return (
     <div className="login-screen">
-      <div className="login-visual">
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      <div
+        className="login-visual"
+        ref={visualRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            transform: `translate(${tilt.x * 10}px, ${tilt.y * 10}px)`,
+            transition: "transform 0.15s ease-out",
+          }}
+        >
           <LeafMark light size={30} />
           <span style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", fontWeight: 600 }}>
             LeafHR
           </span>
         </div>
-        <p className="login-visual-quote">
+
+        <p
+          className="login-visual-quote"
+          style={{
+            transform: `translate(${tilt.x * 16}px, ${tilt.y * 16}px)`,
+            transition: "transform 0.15s ease-out",
+          }}
+        >
           One calendar for every leave, holiday and approval — built around how
           Sri Lankan offices actually work.
         </p>
-        <div style={{ fontSize: "0.8rem", color: "#9fc2ac" }}>
+
+        <div
+          style={{
+            fontSize: "0.8rem",
+            color: "#9fc2ac",
+            transform: `translate(${tilt.x * 8}px, ${tilt.y * 8}px)`,
+            transition: "transform 0.15s ease-out",
+          }}
+        >
           Leave &amp; Workforce Management Platform
         </div>
-        <div className="login-visual-leaf">
+
+        <div
+          className="login-visual-leaf"
+          style={{
+            transform: `translate(${tilt.x * -34}px, ${tilt.y * -34}px) scale(1.02)`,
+            transition: "transform 0.15s ease-out",
+          }}
+        >
           <LeafMark light size={260} />
         </div>
       </div>
