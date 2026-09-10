@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LeafMark from "../components/LeafMark";
 import { useApp } from "../context/AppContext";
 
@@ -74,8 +74,9 @@ export default function Login() {
           <button className="btn btn-primary" type="submit" style={{ width: "100%", justifyContent: "center" }}>
             Sign in to LeafHR
           </button>
+
           <p className="hint" style={{ marginTop: 14, textAlign: "center" }}>
-            Demo build — no real authentication is performed.
+            New here? <Link to="/register" style={{ color: "var(--forest)", fontWeight: 500 }}>Create an account</Link>
           </p>
         </form>
       </div>
