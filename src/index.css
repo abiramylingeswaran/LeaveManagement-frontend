@@ -537,7 +537,7 @@ textarea { resize: vertical; min-height: 72px; }
 
 .login-visual {
   background: var(--forest-dark);
-  color: #eef4ef;
+  color: #85cd91;
   padding: 56px;
   display: flex;
   flex-direction: column;
