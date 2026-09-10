@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Bell, ChevronDown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Bell, ChevronDown, LogOut, Settings, User } from "lucide-react";
 import { useApp } from "../context/AppContext";
 import { notifications } from "../data/mockData";
 
@@ -13,8 +14,21 @@ function initials(name) {
 }
 
 export default function Topbar() {
-  const { profile } = useApp();
-  const [open, setOpen] = useState(false);
+  const { profile, setRole } = useApp();
+  const navigate = useNavigate();
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const closeMenus = () => {
+    setNotifOpen(false);
+    setMenuOpen(false);
+  };
+
+  const handleLogout = () => {
+    closeMenus();
+    setRole("employee"); // reset to a default role for the next sign-in
+    navigate("/login");
+  };
 
   return (
     <div className="topbar">
@@ -23,21 +37,21 @@ export default function Topbar() {
       </div>
       <div className="topbar-right">
         <div style={{ position: "relative" }}>
-          <button className="icon-btn" onClick={() => setOpen((o) => !o)} aria-label="Notifications">
+          <button
+            className="icon-btn"
+            onClick={() => {
+              setNotifOpen((o) => !o);
+              setMenuOpen(false);
+            }}
+            aria-label="Notifications"
+          >
             <Bell size={16} />
             <span className="notif-dot" />
           </button>
-          {open && (
+          {notifOpen && (
             <div
               className="modal"
-              style={{
-                position: "absolute",
-                right: 0,
-                top: 44,
-                width: 300,
-                padding: 14,
-                zIndex: 20,
-              }}
+              style={{ position: "absolute", right: 0, top: 44, width: 300, padding: 14, zIndex: 20 }}
             >
               <div style={{ fontWeight: 600, marginBottom: 10, fontSize: "0.86rem" }}>Notifications</div>
               {notifications.map((n) => (
@@ -49,9 +63,63 @@ export default function Topbar() {
             </div>
           )}
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div className="avatar">{initials(profile.name)}</div>
-          <ChevronDown size={15} color="var(--ink-muted)" />
+
+        <div style={{ position: "relative" }}>
+          <button
+            onClick={() => {
+              setMenuOpen((o) => !o);
+              setNotifOpen(false);
+            }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+            }}
+          >
+            <div className="avatar">{initials(profile.name)}</div>
+            <ChevronDown size={15} color="var(--ink-muted)" />
+          </button>
+
+          {menuOpen && (
+            <div
+              className="modal"
+              style={{ position: "absolute", right: 0, top: 44, width: 200, padding: 8, zIndex: 20 }}
+            >
+              <div style={{ padding: "8px 10px", borderBottom: "1px solid var(--line-soft)", marginBottom: 4 }}>
+                <div style={{ fontWeight: 600, fontSize: "0.85rem" }}>{profile.name}</div>
+                <div style={{ fontSize: "0.74rem", color: "var(--ink-muted)" }}>{profile.title}</div>
+              </div>
+
+              <button
+                onClick={closeMenus}
+                className="nav-link"
+                style={{ color: "var(--ink)", width: "100%", justifyContent: "flex-start", background: "none", border: "none", cursor: "pointer" }}
+              >
+                <User size={15} />
+                My profile
+              </button>
+              <button
+                onClick={closeMenus}
+                className="nav-link"
+                style={{ color: "var(--ink)", width: "100%", justifyContent: "flex-start", background: "none", border: "none", cursor: "pointer" }}
+              >
+                <Settings size={15} />
+                Settings
+              </button>
+              <button
+                onClick={handleLogout}
+                className="nav-link"
+                style={{ color: "var(--brick)", width: "100%", justifyContent: "flex-start", background: "none", border: "none", cursor: "pointer" }}
+              >
+                <LogOut size={15} />
+                Log out
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

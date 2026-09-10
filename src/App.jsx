@@ -12,6 +12,7 @@ import Holidays from "./pages/Holidays";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 import { useApp } from "./context/AppContext";
+import Register from "./pages/Register";
 
 function DashboardForRole() {
   const { role } = useApp();
@@ -34,6 +35,7 @@ export default function App() {
         <Route path="/holidays" element={<Holidays />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/register" element={<Register />} />
       </Route>
     </Routes>
   );
