@@ -76,7 +76,7 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div className="sidebar-foot">
+      {/* <div className="sidebar-foot">
         <div className="role-switch">
           <div className="role-switch-label">Preview as</div>
           <div className="role-pill-row">
@@ -91,7 +91,7 @@ export default function Sidebar() {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
     </aside>
   );
 }

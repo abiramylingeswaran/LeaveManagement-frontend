@@ -25,6 +25,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route element={<Layout />}>
         <Route path="/" element={<DashboardForRole />} />
         <Route path="/apply" element={<ApplyLeave />} />
@@ -35,7 +36,6 @@ export default function App() {
         <Route path="/holidays" element={<Holidays />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/register" element={<Register />} />
       </Route>
     </Routes>
   );
